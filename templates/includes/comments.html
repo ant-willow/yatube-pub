@@ -1,0 +1,30 @@
+{% if comments %}
+<a class="btn btn-light border" data-toggle="collapse" href="#comment_list" role="button" aria-controls="comments_list">
+    Комментарии ({{ post.num_comments }})
+</a>
+
+<div class="collapse" id="comment_list">
+    <div class="card-body card ">
+
+        {% for comment in comments %}
+
+        <div class="media-body py-2">
+            <h5 class="my-0">
+                <a class="text-dark" href="{% url 'profile' comment.author.username %}" name="comment_{{ comment.id }}">
+                    @{{ comment.author.username }}
+
+                </a>
+                {% if comment.author == user %}
+                <a class="btn btn-sm text-muted"
+                    href="{% url 'del_comment' comment.author.username post.id comment.id %}">Удалить
+                    комментарий</a>
+                {% endif %}
+            </h5>
+            {{ comment.text|linebreaksbr }}
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,8 @@
+.git/*
+.githb/
+.env
+venv/
+db.sqlite3
+docker-compose.yaml
+nginx.conf
+

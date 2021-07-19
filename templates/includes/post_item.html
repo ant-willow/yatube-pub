@@ -1,0 +1,57 @@
+{% load time_ago %}
+<div class="card mb-3 mt-1 shadow-sm">
+
+    {% load thumbnail %}
+    {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+    <img class="card-img" src="{{ im.url }}">
+    {% endthumbnail %}
+
+    <div class="card-body">
+
+        {% if post.group %}
+        <a class="card-link muted" href="{% url 'group_posts' post.group.slug %}">
+            <strong class="text-dark d-block ">#{{ post.group.title }}</strong>
+        </a>
+        {% endif %}
+
+        <p class="card-text">
+        <p>{{ post.text|linebreaksbr }}</p>
+        </p>
+    </div>
+
+    <div class="card-footer py-2 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group ">
+                {% if request.user.is_authenticated %}
+                
+                {% include 'includes/like_button.html' with post=post%}
+
+
+                {%if page %}
+                <!-- Ссылка на страницу записи в атрибуте href-->
+                <a class="btn btn-sm text-muted" href="{% url 'post' post.author.username post.id %}" role="button">
+
+                    {% if post.num_comments %}
+                    Комментарии ({{ post.num_comments }})
+                    {% else%}
+                    Добавить комментарий
+                    {% endif %}
+                    {% endif %}
+                </a>
+                {% if post.author == user %}
+                <!-- Ссылка на редактирование, показывается только автору записи -->
+                <a class="btn btn-sm text-muted" href="{% url 'post_edit' post.author.username post.id %}"
+                    role="button">Редактировать</a>
+                {% endif %}
+                {% endif %}
+
+            </div>
+            <div style="text-align:right;">
+                <a href="{% url 'profile' post.author.username %}"><strong
+                        class=" text-dark">@{{ post.author.username }}</strong></a>
+                <small class="text-muted d-block">{{ post.pub_date|time_ago }}</small>
+            </div>
+
+        </div>
+    </div>
+</div>

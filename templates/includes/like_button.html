@@ -1,0 +1,63 @@
+
+<div id="likebutton{{ post.id }}" num_likes="{{ post.num_likes }}" is_liked="{{ post.is_liked }}" class='pr-2'>
+    {% if post.num_likes %}
+        {% if post.is_liked %}
+            <button class=" btn btn-sm border-secondary rounded-pill" id="like{{ post.id }}">{{ post.num_likes}} &#9829;</button>
+        {% else%}
+            <button class=" btn btn-sm text-muted rounded-pill" id="like{{ post.id }}">{{ post.num_likes}} &#9829;</button>
+        {% endif %}
+    {% else%} 
+        <button class=" btn btn-sm text-muted rounded-pill" id="like{{ post.id }}"> &#9829;</button>
+    {% endif %}
+</div>
+              
+<script type="text/javascript"> 
+    $('#likebutton{{post.id}}').click(function(){ 
+    var id, num_likes, is_liked;
+    is_liked = $(this).attr('is_liked');
+    num_likes = $(this).attr('num_likes');
+    id = '{{ post.id }}';
+    if (is_liked == 'False') {
+        $.ajax( 
+        { 
+            type:"GET", 
+            url: "{% url 'post_like'%}",
+            data:{ 
+                    post_id: id,
+                    num_likes: num_likes,
+                    is_liked: is_liked
+        }, 
+        success: function( data ) 
+        {       
+                $('#likebutton' + id).attr('num_likes', data.num_likes )
+                $('#likebutton' + id).attr('is_liked', data.is_liked )
+                $( '#like' + id).text(data.num_likes + ' \u2665'); 
+                $( '#like' + id).removeClass('text-muted');
+                $( '#like' + id).addClass('border-secondary'); 
+        }
+    
+        })
+    }
+    else {
+        $.ajax( 
+        { 
+            type:"GET", 
+            url: "{% url 'post_remove_like'%}",
+            data:{ 
+                    post_id: id,
+                    num_likes: num_likes,
+                    is_liked: is_liked
+        }, 
+        success: function( data ) 
+        {       
+                $('#likebutton' + id).attr('num_likes', data.num_likes )
+                $('#likebutton' + id).attr('is_liked', data.is_liked )
+                $( '#like' + id).text(data.num_likes + ' \u2665');
+                $( '#like' + id).removeClass('border-secondary');
+                $( '#like' + id).addClass('text-muted'); 
+        }
+    
+        })
+        }
+    });
+</script>

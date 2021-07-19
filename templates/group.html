@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %} Записи сообщества {{ group.title }}{% endblock %}
+{% block header %} Записи сообщества {{ group.title }}{% endblock %}
+{% block content %}
+
+    
+    <p>{{ group.description }}</p>
+    <br>
+    <div class="container">
+    {% include "includes/menu.html" %}
+    <br> 
+    {% if request.user.is_authenticated %}
+        <div class="py-3">
+            {% if not group.is_followed %}
+                <a class=" btn btn-primary" href="{% url 'group_follow' group.slug %}">Подписаться</a>
+            {% else %}
+                <a class="btn" href="{% url 'group_unfollow' group.slug %}">Отписаться</a>
+            {% endif %}
+        </div> 
+    {% endif %}                   
+
+    {% for post in page %}
+        {% include 'includes/post_item.html' with post=post%}
+    {% endfor %}
+
+    {% if page.has_other_pages %}
+        {% include "includes/paginator.html" with items=page paginator=paginator %}
+    {% endif %}
+    </div>
+{% endblock %}

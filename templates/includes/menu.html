@@ -1,0 +1,30 @@
+<div class="row">
+    <ul class="nav nav-tabs ">
+        <li class="nav-item ">
+            <a class="nav-link {% if menu == 'index' %}active{% endif %}" href="{% url 'index' %}">Все авторы</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link {% if menu == 'liked' %}active{% endif %}" href="{% url 'liked_posts' %}">Избранные
+                посты</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if menu == 'follow' %}active{% endif %}" href="{% url 'follow_index' %}">Избранные
+                авторы</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if menu == 'follow_groups' %}active{% endif %}"
+                href="{% url 'follow_groups' %}">Избранные сообщества</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="nav-link {% if menu == 'groups' %}active{% endif %}" href="{% url 'groups_overview' %}">Все
+                сообщества </a>
+
+        </li>
+        {% if menu == 'groups' and user.is_authenticated %}
+        <a class="btn btn-primary" href="{% url 'new_group' %}">Создать</a>
+        {% endif %}
+    </ul>
+
+</div>

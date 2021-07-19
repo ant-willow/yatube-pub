@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Избранные сообщества{% endblock %}
+{% block header %}Избранные сообщества{% endblock %}
+{% block content %}
+
+    <br>
+    <div class="container">
+        {% include "includes/menu.html" with menu='follow_groups' %}  
+        <br> 
+                {% for post in page %}
+                    {% include 'includes/post_item.html' with post=post %}
+                {% endfor %}
+    </div>     
+    {% if page.has_other_pages %}
+        {% include "includes/paginator.html" with items=page paginator=paginator %}
+    {% endif %}
+
+{% endblock %}

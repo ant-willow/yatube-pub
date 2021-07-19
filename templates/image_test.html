@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}image test{% endblock %}
+{% block header %}image test{% endblock %}
+{% block content %}
+{% load static %}
+
+
+
+
+
+<main role="main" class="container d-flex">
+
+    <br>
+    <div class=" p-2">
+        <img src="{% static 'image.bmp' %}" id='image' style="max-width: 100%; display: block;">
+    </div>
+    <button id="but" class="">DO SOMETHING</button>
+
+    {% block javascript %}
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var image = document.querySelector('#image');
+            var cropper = new Cropper(image, {
+                toggleDragModeOnDblclick: false,
+                aspectRatio: 2.83,
+                minCropBoxHeight: 50,
+                zoomable: false,
+
+                ready: function () {
+                    var cropper = this.cropper;
+                    var containerData = cropper.getContainerData();
+                    var cropBoxData = cropper.getCropBoxData();
+                },
+            });
+
+        });
+    </script>
+    {% endblock %}
+
+
+
+</main>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %} The Last Social Media You'll Ever Need {% endblock %} | Yatube</title>
+    <!-- Загрузка статики -->
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <link href="{% static 'cropperjs/dist/cropper.css' %}" rel="stylesheet">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'cropperjs/dist/cropper.js' %}"></script>
+
+</head>
+
+<body class="bg-light">
+    {% include 'includes/nav.html' %}
+    <main>
+        <div class="container">
+            <br>
+            <h1>{% block header %} The Last Social Media You'll Ever Need {% endblock %}</h1>
+            <br>
+            {% block content %}
+            <!-- Содержимое страницы -->
+            {% endblock %}
+        </div>
+    </main>
+    {% include 'includes/footer.html' %}
+</body>
+
+</html>

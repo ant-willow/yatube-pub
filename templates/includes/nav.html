@@ -1,0 +1,26 @@
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="/"><span style="color:red">Ya</span>tube</a>
+    <nav class="my-2 my-md-0 mr-md-3">
+
+        {% if user.is_authenticated %}
+        <div class="btn-group">   
+            <a class="btn btn-primary" href="{% url 'new_post' %}" ">Новая запись</a>
+            <div class="btn-group dropleft ml-1">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                    {{user}}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="p-2 text-dark dropdown-item" href="{% url 'profile' user %}">Профиль</a>
+                    <a class="p-2 text-dark dropdown-item" href="{% url 'password_change' %}">Изменить пароль</a>
+                    <a class="p-2 text-dark dropdown-item" href="{% url 'logout' %}">Выйти</a>
+                </div>
+            </div>
+
+        {% else %}
+            <a class="btn btn-primary" href="{% url 'login' %}" ">Войти</a>
+            <a class="btn btn-primary" href="{% url 'signup' %}" ">Регистрация</a>
+        {% endif %}
+
+        </div>
+    </nav>
+</nav>

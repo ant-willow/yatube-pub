@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load user_filters %}
+{% load static %}
+{% block title %}
+{% if not post %}Добавить новую запись
+{% else %}Редактировать запись
+{% endif %}
+{% endblock %}
+{% block header %}
+{% if not post %}Добавить новую запись
+{% else %}Редактировать запись
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-9 p-5">
+        <div class="card">
+            {% if not post %}
+            <h5 class="card-header">Добавить запись</h5>
+            {% else %}
+            <h5 class="card-header">Редактировать</h5>
+            {% endif %}
+
+            <div class="d-flex" style="align-self: center;" id="cropDiv">
+                <img src="" id="cropImage" style="max-width: 100%;  max-height: 400px;" cropped_data="nothing">
+            </div>
+
+
+            <div class="card-body">
+
+                <form method="post" enctype="multipart/form-data" action={{ request.path }} id="postForm">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                    <div class="form-group row"
+                        aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+                        <div class="col-md-10 offset-md-1">
+                            {{ field|addclass:"form-control" }}
+                            {% if field.help_text %}
+                            <small id="{{ field.id_for_label }}-help"
+                                class="form-text text-muted">{{ field.help_text|safe }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="col-md-6 offset-md-4">
+                        <button class="btn btn-primary" type="submit">
+                            {% if not post %}Добавить запись
+                            {% else %}Сохранить
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+
+            </div> <!-- card body -->
+
+        </div> <!-- card -->
+
+    </div> <!-- col -->
+</div> <!-- row -->
+
+<script>
+    $(function () {
+        var image = document.querySelector('#cropImage');
+        var href = $("div.card-body").find("a")[0]
+        $("#cropImage").attr("src", href);
+
+
+
+        $('#but').click(function () {
+            alert('fuuuuu')
+            image.cropper.destroy()
+        });
+
+        $("#id_image").change(function () {
+
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+                    $("#cropImage").attr("src", e.target.result);
+                    if (image.hasOwnProperty("cropper")) {
+                        image.cropper.destroy()
+                    }
+
+                    cropFunc();
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        function cropFunc() {
+
+
+            var data = document.querySelector('#id_crop_data');
+            var cropper = new Cropper(image, {
+                toggleDragModeOnDblclick: false,
+                aspectRatio: 2.83,
+                minCropBoxHeight: 50,
+                zoomable: false,
+                ready: function () {
+
+                },
+                cropend: function (event) {
+
+                    data.value = JSON.stringify(cropper.getData(true));
+
+                }
+            });
+        };
+    });
+
+</script>
+
+{% endblock %}

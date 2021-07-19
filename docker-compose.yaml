@@ -1,0 +1,35 @@
+version: '3.8'
+
+volumes:
+  postgres_data:
+  static_files:
+  media_files:
+
+services:
+  web:
+    image: ${DOCKER_USERNAME}/yatube:latest 
+    restart: always
+    volumes:
+      - static_files:/code/static
+      - media_files:/code/media
+    env_file:
+      - ./.env
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn yatube.wsgi:application --bind 0.0.0.0:8000"
+
+  nginx:
+    image: nginx:1.19
+    restart: always
+    ports:
+      - "81:81"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_files:/code/static
+      - media_files:/code/media
+    environment:
+      - NGINX_HOST=${HOST}
+    depends_on:
+      - web
+    
